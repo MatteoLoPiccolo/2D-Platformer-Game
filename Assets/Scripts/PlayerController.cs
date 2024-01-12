@@ -2,16 +2,17 @@
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private float _speed;
+
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
     private BoxCollider2D _boxCollider2D;
 
     private bool _isJumping;
-
-    private const float standingOffsetX = 0.03f;
+    private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
-    private const float standingSizeX = 0.73f;
-    private const float standingSizeY = 2.21f;
+    private const float standingSizeX = 0.7f;
+    private const float standingSizeY = 2.13f;
     
     private const float crouchingOffsetX = -0.11f;
     private const float crouchingOffsetY = 0.6f;
@@ -37,7 +38,9 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
+
         FlipSprite(horizontalInput);
+        MovePlayer(horizontalInput, verticalInput);
 
         _animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
         _animator.SetFloat("Height", verticalInput);
@@ -57,7 +60,15 @@ public class PlayerController : MonoBehaviour
             _boxCollider2D.offset = new Vector2(standingOffsetX, standingOffsetY);
         }
 
-        if(verticalInput > 0 && !_isJumping)
+    }
+
+    void MovePlayer(float horizontal, float vertical)
+    {
+        var position = transform.position;
+        position.x += (horizontal * _speed) * Time.deltaTime;
+        transform.position = position;
+
+        if (vertical > 0 && !_isJumping)
         {
             _isJumping = true;
             _animator.SetBool("IsJumping", true);
