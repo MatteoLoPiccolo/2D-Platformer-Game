@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D _boxCollider2D;
     private Rigidbody2D _rigidbody2D;
 
-    private bool _isJumping;
+    public bool _isGrounded;
     private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
     private const float standingSizeX = 0.7f;
@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+
+        transform.position = new Vector3(0f, 0.5f, 0f);
     }
 
     // Update is called once per frame
@@ -51,7 +53,7 @@ public class PlayerController : MonoBehaviour
             UpdateColliderSizeAndOffset(standingSizeX, standingSizeY, standingOffsetX, standingOffsetY);
         }
 
-        if (verticalInput > 0 && !_isJumping)
+        if (verticalInput > 0 && _isGrounded)
         {
             Jump();
         }
@@ -59,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        _isJumping = true;
+        _isGrounded = false;
         _rigidbody2D.AddForce((Vector2.up * _jumpForce), ForceMode2D.Force);
         _animator.SetBool("IsJumping", true);
     }
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
     void OnJumpAnimationEnd()
     {
-        _isJumping = false;
+        _isGrounded = true;
         _animator.SetBool("IsJumping", false);
     }
 
@@ -93,6 +95,23 @@ public class PlayerController : MonoBehaviour
         else if (horizontalInput > 0 && _spriteRenderer.flipX)
         {
             _spriteRenderer.flipX = false;
+        }
+    }
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.transform.tag == "Ground")
+        {
+            _isGrounded = true;
+            Debug.Log("Ground");
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.transform.tag == "Ground")
+        {
+            _isGrounded = false;
+            Debug.Log("Air");
         }
     }
 }
