@@ -2,6 +2,8 @@
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private int _score = 0;
+
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
 
@@ -10,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D _boxCollider2D;
     private Rigidbody2D _rigidbody2D;
 
-    public bool _isGrounded;
+    private bool _isGrounded;
     private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
     private const float standingSizeX = 0.7f;
@@ -20,6 +22,12 @@ public class PlayerController : MonoBehaviour
     private const float crouchingOffsetY = 0.6f;
     private const float crouchingSizeX = 0.94f;
     private const float crouchingSizeY = 1.36f;
+
+    public int Score
+    {
+        get { return _score; }
+        set { _score = value; }
+    }
 
     void Awake()
     {
@@ -38,7 +46,7 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Jump");
 
         Move(horizontalInput);
-        
+
 
         FlipSprite(horizontalInput);
 
@@ -53,7 +61,7 @@ public class PlayerController : MonoBehaviour
             UpdateColliderSizeAndOffset(standingSizeX, standingSizeY, standingOffsetX, standingOffsetY);
         }
 
-        if (verticalInput > 0 && _isGrounded)
+        if (verticalInput > 0 && _isGrounded && horizontalInput == 0)
         {
             Jump();
         }
