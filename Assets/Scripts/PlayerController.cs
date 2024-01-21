@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -110,7 +111,7 @@ public class PlayerController : MonoBehaviour
         if (other.transform.tag == "Ground")
         {
             _isGrounded = true;
-            Debug.Log("Ground");
+            //Debug.Log("Ground");
         }
     }
 
@@ -119,7 +120,13 @@ public class PlayerController : MonoBehaviour
         if (other.transform.tag == "Ground")
         {
             _isGrounded = false;
-            Debug.Log("Air");
+            //Debug.Log("Air");
         }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Enemy killed me!");
+        _animator.SetTrigger("Die");
     }
 }
