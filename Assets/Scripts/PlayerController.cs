@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private int _score = 0;
-
+    [Header("Movement")]
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
+
+    private int _score = 0;
+    private int _health = 3;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
 
     private bool _isGrounded;
+
     private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
     private const float standingSizeX = 0.7f;
@@ -28,6 +31,12 @@ public class PlayerController : MonoBehaviour
     {
         get { return _score; }
         set { _score = value; }
+    }
+
+    public int Health
+    {
+        get { return _health; }
+        set { _health = value; }
     }
 
     void Awake()

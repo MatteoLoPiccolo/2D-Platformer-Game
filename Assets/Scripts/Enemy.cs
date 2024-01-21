@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
+using UnityEngine.SceneManagement;
 using static UnityEditor.LightmapEditorSettings;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float _speed;
+    [SerializeField] int _damage;
+
     [SerializeField] Transform _checkForGround;
     [SerializeField] PlayerController _playerController;
 
@@ -45,11 +48,15 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player grab collectible");
+            Debug.Log("Enemy hit the player!");
 
             if (_playerController != null)
             {
-                _playerController.Die();
+                _playerController.Health -= _damage;
+
+                if (_playerController.Health <= 0)
+                    SceneManager.LoadScene(0);
+                    //_playerController.Die();
             }
         }
     }

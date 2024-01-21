@@ -171,5 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 1
+  _damage: 1
   _checkForGround: {fileID: 79630098}
   _playerController: {fileID: 0}
