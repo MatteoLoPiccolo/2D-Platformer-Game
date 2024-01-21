@@ -51,8 +51,9 @@ public class Enemy : MonoBehaviour
                 _playerController.Health -= _damage;
 
                 if (_playerController.Health <= 0)
-                    SceneManager.LoadScene(0);
-                    //_playerController.Die();
+                {
+                    _playerController.Die();
+                }
             }
         }
     }

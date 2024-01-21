@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,8 +7,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
 
+    [SerializeField] private Canvas _canvas;
+
     private int _score = 0;
     private int _health = 3;
+    //private bool _isDead;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -38,12 +42,16 @@ public class PlayerController : MonoBehaviour
         set { _health = value; }
     }
 
+    //public bool IsDead { get; private set; }
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+
+        
 
         transform.position = new Vector3(0f, 0.5f, 0f);
     }
@@ -135,6 +143,17 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("Enemy killed me!");
+
+        if(_canvas != null)
+        {
+            var gameOverObj = _canvas.transform.Find("GameOver");
+            gameOverObj.gameObject.SetActive(true);
+        }
+
         _animator.SetTrigger("Die");
+        //_isDead = true;
+        enabled = false;
+        _rigidbody2D.bodyType = RigidbodyType2D.Static;
+        _boxCollider2D.enabled = false;
     }
 }
