@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] GameObject _levelPopup;
     [SerializeField] Button _startButton;
     [SerializeField] Button _quitButton;
 
@@ -16,7 +17,7 @@ public class MainMenu : MonoBehaviour
 
     private void StartGame()
     {
-        SceneManager.LoadScene(1);
+        _levelPopup.SetActive(true);
     }
 
     private void QuitGame()
