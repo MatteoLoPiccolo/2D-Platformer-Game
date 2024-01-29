@@ -15,6 +15,7 @@ public class Collectible : MonoBehaviour
             if (_playerController != null)
             {
                 _scoreUI.UpdatePoints(_points);
+                SoundManager.Instance.PlaySound(SoundManager.SoundsType.Collectable);
                 Destroy(gameObject);
             }
         }

@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager  : MonoBehaviour 
+public class LevelManager : MonoBehaviour
 {
     [SerializeField] List<string> levels = new List<string>();
 
     private static LevelManager _instance;
 
-    public static LevelManager Instance {  get { return _instance; } }
+    public static LevelManager Instance { get { return _instance; } }
 
     // Start is called before the first frame update
     void Awake()
@@ -37,7 +37,7 @@ public class LevelManager  : MonoBehaviour
 
         int currentSceneIndex = levels.FindIndex(level => level == currentScene.name);
         int nextSceneIndex = currentSceneIndex + 1;
-        if(nextSceneIndex < levels.Count)
+        if (nextSceneIndex < levels.Count)
             SetLevelStatus(levels[nextSceneIndex], LevelStatus.Completed);
     }
 

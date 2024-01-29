@@ -245,5 +245,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 8
-  _jumpForce: 1750
-  _isGrounded: 0
+  _jumpForce: 6
+  _canvas: {fileID: 0}

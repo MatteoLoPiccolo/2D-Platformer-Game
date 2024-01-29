@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LevelSelection : MonoBehaviour
 {
     [SerializeField] List<Button> levelButtons = new List<Button>();
-    
+
 
     // Start is called before the first frame update
     void Awake()
@@ -29,15 +29,15 @@ public class LevelSelection : MonoBehaviour
                     Debug.Log("Cannot play this level until you unlock it.");
                     break;
                 case LevelStatus.Unlocked:
+                    SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick);
                     SceneManager.LoadScene((int)level);
-                    Debug.Log("load : " +  level.ToString());
+                    Debug.Log("load : " + level.ToString());
                     break;
                 case LevelStatus.Completed:
+                    SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick);
                     SceneManager.LoadScene(level.ToString());
                     break;
             }
-
-            //SceneManager.LoadScene((int)level);
         }
         else
         {

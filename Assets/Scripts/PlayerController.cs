@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class PlayerController : MonoBehaviour
 
     private int _score = 0;
     private int _health = 3;
-    //private bool _isDead;
 
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
@@ -19,6 +17,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
 
     private bool _isGrounded;
+    private float soundCooldown = 0.5f;
+    private float soundTimer = 0f;
 
     private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
-        
+
 
         transform.position = new Vector3(0f, 0.5f, 0f);
     }
@@ -64,6 +64,11 @@ public class PlayerController : MonoBehaviour
 
         Move(horizontalInput);
 
+        if (horizontalInput != 0 && _isGrounded && Time.time > soundTimer)
+        {
+            SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerMove);
+            soundTimer = Time.time + soundCooldown;
+        }
 
         FlipSprite(horizontalInput);
 
@@ -78,7 +83,7 @@ public class PlayerController : MonoBehaviour
             UpdateColliderSizeAndOffset(standingSizeX, standingSizeY, standingOffsetX, standingOffsetY);
         }
 
-        if (verticalInput > 0 && _isGrounded && horizontalInput == 0)
+        if (verticalInput > 0 && _isGrounded)
         {
             Jump();
         }
@@ -87,7 +92,9 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         _isGrounded = false;
-        _rigidbody2D.AddForce((Vector2.up * _jumpForce), ForceMode2D.Force);
+        _rigidbody2D.velocity = Vector2.up * _jumpForce;
+        SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerMove, "EllenFootstepJump");
+        //_rigidbody2D.AddForce((Vector2.up * _jumpForce), ForceMode2D.Force);
         _animator.SetBool("IsJumping", true);
     }
 
@@ -105,11 +112,6 @@ public class PlayerController : MonoBehaviour
         _boxCollider2D.offset = new Vector2(offsetX, offsetY);
     }
 
-    void OnJumpAnimationEnd()
-    {
-        _isGrounded = true;
-        _animator.SetBool("IsJumping", false);
-    }
 
     void FlipSprite(float horizontalInput)
     {
@@ -122,12 +124,22 @@ public class PlayerController : MonoBehaviour
             _spriteRenderer.flipX = false;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "Ground")
+        {
+            //_isGrounded = true;
+            SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerMove, "EllenFootstepLand");
+        }
+    }
+
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.transform.tag == "Ground")
         {
             _isGrounded = true;
-            //Debug.Log("Ground");
+            _animator.SetBool("IsJumping", false);
         }
     }
 
@@ -136,7 +148,6 @@ public class PlayerController : MonoBehaviour
         if (other.transform.tag == "Ground")
         {
             _isGrounded = false;
-            //Debug.Log("Air");
         }
     }
 
@@ -144,14 +155,14 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Enemy killed me!");
 
-        if(_canvas != null)
+        if (_canvas != null)
         {
             var gameOverObj = _canvas.transform.Find("GameOver");
             gameOverObj.gameObject.SetActive(true);
         }
 
+        SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerDeath);
         _animator.SetTrigger("Die");
-        //_isDead = true;
         enabled = false;
         _rigidbody2D.bodyType = RigidbodyType2D.Static;
         _boxCollider2D.enabled = false;

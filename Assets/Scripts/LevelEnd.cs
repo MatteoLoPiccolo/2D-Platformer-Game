@@ -12,7 +12,6 @@ public class LevelEnd : MonoBehaviour
             {
                 LevelManager.Instance.MarkCurrentLevelComplete();
                 Debug.Log(SceneManager.GetActiveScene().name + " is : " + LevelManager.Instance.GetLevelStatus(SceneManager.GetActiveScene().name));
-
                 SceneManager.LoadScene(0);
             }
         }
