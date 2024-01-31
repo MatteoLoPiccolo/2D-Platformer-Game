@@ -53,16 +53,10 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Enemy hit the player!");
-
             if (_playerController != null)
             {
-                _playerController.Health -= _damage;
-
-                if (_playerController.Health <= 0)
-                {
-                    _playerController.Die();
-                }
+                Debug.Log("Enemy hit the player!");
+                _playerController.TakeDamage(_damage);
             }
         }
     }

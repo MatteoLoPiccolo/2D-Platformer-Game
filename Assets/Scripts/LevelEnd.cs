@@ -11,8 +11,7 @@ public class LevelEnd : MonoBehaviour
             if (_playerController != null)
             {
                 LevelManager.Instance.MarkCurrentLevelComplete();
-                Debug.Log(SceneManager.GetActiveScene().name + " is : " + LevelManager.Instance.GetLevelStatus(SceneManager.GetActiveScene().name));
-                SceneManager.LoadScene(0);
+                LevelManager.Instance.LoadNextUnlockedScene();
             }
         }
     }

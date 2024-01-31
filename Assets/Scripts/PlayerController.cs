@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
+
+    [Space]
+    [SerializeField] private List<Sprite> _lifeSprites;
 
     [SerializeField] private Canvas _canvas;
 
@@ -59,8 +65,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Jump");
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Jump");
 
         Move(horizontalInput);
 
@@ -129,8 +135,12 @@ public class PlayerController : MonoBehaviour
     {
         if (other.transform.tag == "Ground")
         {
-            //_isGrounded = true;
             SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerMove, "EllenFootstepLand");
+        }
+
+        if (other.transform.tag == "Wall")
+        {
+
         }
     }
 
@@ -166,5 +176,22 @@ public class PlayerController : MonoBehaviour
         enabled = false;
         _rigidbody2D.bodyType = RigidbodyType2D.Static;
         _boxCollider2D.enabled = false;
+    }
+
+    internal void TakeDamage(int damage)
+    {
+        _health -= damage;
+
+        if(_health <= 0)
+        {
+            Die();
+        }
+
+        var healthUI = _canvas.GetComponent<LifeUI>();
+
+        if(healthUI != null)
+        {
+            healthUI.UpdateUI();
+        }
     }
 }

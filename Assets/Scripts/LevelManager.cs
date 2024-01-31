@@ -38,7 +38,28 @@ public class LevelManager : MonoBehaviour
         int currentSceneIndex = levels.FindIndex(level => level == currentScene.name);
         int nextSceneIndex = currentSceneIndex + 1;
         if (nextSceneIndex < levels.Count)
-            SetLevelStatus(levels[nextSceneIndex], LevelStatus.Completed);
+            SetLevelStatus(levels[nextSceneIndex], LevelStatus.Unlocked);
+    }
+
+    public void LoadNextUnlockedScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        int currentSceneIndex = levels.FindIndex(level => level == currentScene.name);
+        int nextSceneIndex = currentSceneIndex + 1;
+
+        while (nextSceneIndex < levels.Count && GetLevelStatus(levels[nextSceneIndex]) != LevelStatus.Unlocked)
+        {
+            nextSceneIndex++;
+        }
+
+        if (nextSceneIndex < levels.Count)
+        {
+            SceneManager.LoadScene(levels[nextSceneIndex]);
+        }
+        else
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     public LevelStatus GetLevelStatus(string levelName)
