@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,9 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpForce;
 
     [Space]
+    [Header("Life UI reference")]
     [SerializeField] private List<Sprite> _lifeSprites;
 
+    [Space]
+    [Header("References")]
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private Transform _footPosition;
+    [SerializeField] private Transform _spawnPoint;
 
     private int _score = 0;
     private int _health = 3;
@@ -25,7 +28,6 @@ public class PlayerController : MonoBehaviour
     private bool _isGrounded;
     private float soundCooldown = 0.5f;
     private float soundTimer = 0f;
-
     private const float standingOffsetX = 0.015f;
     private const float standingOffsetY = 1f;
     private const float standingSizeX = 0.7f;
@@ -48,8 +50,6 @@ public class PlayerController : MonoBehaviour
         set { _health = value; }
     }
 
-    //public bool IsDead { get; private set; }
-
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -57,9 +57,7 @@ public class PlayerController : MonoBehaviour
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
-
-
-        transform.position = new Vector3(0f, 0.5f, 0f);
+        transform.position = _spawnPoint.position;
     }
 
     // Update is called once per frame
@@ -136,11 +134,6 @@ public class PlayerController : MonoBehaviour
         if (other.transform.tag == "Ground")
         {
             SoundManager.Instance.PlaySound(SoundManager.SoundsType.PlayerMove, "EllenFootstepLand");
-        }
-
-        if (other.transform.tag == "Wall")
-        {
-
         }
     }
 

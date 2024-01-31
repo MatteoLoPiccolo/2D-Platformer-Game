@@ -17,11 +17,13 @@ public class MainMenu : MonoBehaviour
     private void StartGame()
     {
         _levelPopup.SetActive(true);
+        SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick, "MenuButtonStart");
     }
 
     private void QuitGame()
     {
         Application.Quit();
+        SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick, "MenuButtonBack");
         Debug.Log("Quit from application");
     }
 }

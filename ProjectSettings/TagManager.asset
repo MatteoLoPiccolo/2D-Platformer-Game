@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Collectible
   - Wall
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - 
   - Wall
   - Ground
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

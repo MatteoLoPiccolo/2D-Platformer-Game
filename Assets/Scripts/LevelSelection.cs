@@ -29,7 +29,7 @@ public class LevelSelection : MonoBehaviour
                     Debug.Log("Cannot play this level until you unlock it.");
                     break;
                 case LevelStatus.Unlocked:
-                    SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick);
+                    SoundManager.Instance.PlaySound(SoundManager.SoundsType.ButtonClick, "MenuButtonConfirm");
                     SceneManager.LoadScene((int)level);
                     Debug.Log("load : " + level.ToString());
                     break;

@@ -2,15 +2,27 @@
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] float _health;
     [SerializeField] float _speed;
     [SerializeField] int _damage;
+    [SerializeField] Transform _lookDirection;
+    [SerializeField] float _maxAttackDistance;
+    [SerializeField] bool _isAttacking;
 
     [SerializeField] Transform _checkForGround;
     [SerializeField] PlayerController _playerController;
 
+    private Animator _animator;
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
+
     private void Update()
     {
         Move();
+        Attack();
         CheckForGround();
     }
 
@@ -47,6 +59,35 @@ public class Enemy : MonoBehaviour
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+
+    private void Attack()
+    {
+        if (_playerController != null)
+        {
+            Vector3 raycastOrigin = _lookDirection.position;
+            Vector3 directionToPlayer = _playerController.transform.position - raycastOrigin;
+            LayerMask layerMask = LayerMask.GetMask("Player");
+
+            RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, directionToPlayer, _maxAttackDistance, layerMask);
+
+            if (hit.collider != null)
+            {
+                float distanceToPlayer = Vector3.Distance(raycastOrigin, _playerController.transform.position);
+
+                if (distanceToPlayer <= _maxAttackDistance)
+                {
+                    _isAttacking = true;
+                    _animator.SetBool("IsAttacking", true);
+                }
+            }
+        }
+    }
+
+    public void OnAttackEnd()
+    {
+        _isAttacking = false;
+        _animator.SetBool("IsAttacking", false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

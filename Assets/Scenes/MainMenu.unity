@@ -242,6 +242,18 @@ MonoBehaviour:
   - _soundType: 2
     _soundName: GenericPickup
     _audioClip: {fileID: 8300000, guid: d76c71e98617e1c41a5cdc490eb1bee1, type: 3}
+  - _soundType: 0
+    _soundName: MenuButtonStart
+    _audioClip: {fileID: 8300000, guid: a4dc23583fb1dc84a89049f88b06efe8, type: 3}
+  - _soundType: 0
+    _soundName: MenuButton02
+    _audioClip: {fileID: 8300000, guid: 9a6c7b4eb436659439202963a40d40d2, type: 3}
+  - _soundType: 0
+    _soundName: MenuButtonBack
+    _audioClip: {fileID: 8300000, guid: 88ac5fcaaded1224484b71c9811f8bb1, type: 3}
+  - _soundType: 0
+    _soundName: MenuButtonConfirm
+    _audioClip: {fileID: 8300000, guid: 68c65aec95671b549be3b900cc305b1e, type: 3}
 --- !u!4 &228613205
 Transform:
   m_ObjectHideFlags: 0
